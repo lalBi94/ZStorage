@@ -1,0 +1,15 @@
+{
+  "name": "test",
+  "version": "0",
+  "description": "Chain list package",
+  "scripts": {
+    "test": "npm install jest && node --experimental-vm-modules node_modules/jest/bin/jest.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}
