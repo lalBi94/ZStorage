@@ -1,4 +1,4 @@
-import ZNodes from "../ZStorage/ZNodes.js"
+import ZNodes from "../src/ZNodes.js"
 
 describe("ZNodes", () => {
     it("Checking equality", () => {

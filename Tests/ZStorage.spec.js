@@ -1,5 +1,5 @@
-import ZNodes from "../ZStorage/ZNodes.js"
-import ZStorage from "../ZStorage/ZStorage.js"
+import ZNodes from "../src/ZNodes.js"
+import ZStorage from "../src/ZStorage.js"
 
 describe("ZStorage functions", () => {
     it("Initializing list & Getting the root of the list", () => {
