@@ -221,4 +221,17 @@ describe("ZStorage functions", () => {
         expect(l.product())
             .toBe(252500)
     })
+
+    it("Expressing in string the list", () => {
+        let l = new ZStorage()
+        l.push([{e:5},{x:[5,{x:3}]}])
+        l.push(1)
+        l.push("salut")
+        l.push(4)
+        l.push({x:5.5,y:6,t:[5,5],s:"s"})
+        l.push(true)
+        
+        expect(l.toString())
+            .toBe("<[{\"e\":5},{\"x\":[5,{\"x\":3}]}],1,salut,4,{\"x\":5.5,\"y\":6,\"t\":[5,5],\"s\":\"s\"},true>")
+    })
 })

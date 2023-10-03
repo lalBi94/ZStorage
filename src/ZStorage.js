@@ -217,8 +217,8 @@ export default class ZStorage {
         if(l2.length() !== this.length()) return false
 
         for(let i = 0; i <= this.length()-1; ++i) {
-                if(this.getValueAt(i) !== l2.getValueAt(i)) return false
-            }
+            if(this.getValueAt(i) !== l2.getValueAt(i)) return false
+        }
 
         return true
     }
@@ -228,28 +228,7 @@ export default class ZStorage {
      *@return {number}
      */
     average() {
-        let cpy = this.root
-        let res = 0
-        
-        while(cpy.getNext() !== null) {
-            cpy = cpy.getNext()
-
-            switch(typeof(cpy.getValue())) {
-                case "number": {
-                    res += cpy.getValue()
-                    break
-                }
-
-                case "string": {
-                    try {
-                        res += parseInt(cpy.getValue(), 10)
-                    } catch(nothing) {}
-                    break
-                }
-            }
-        }
-
-        return (res/this.length())
+        return (this.sum()/this.length())
     }
 
     /**
@@ -257,21 +236,18 @@ export default class ZStorage {
      * @return {number}
      */
     product() {
-        let cpy = this.root
         let res = 1
-        
-        while(cpy.getNext() !== null) {
-            cpy = cpy.getNext()
 
-            switch(typeof(cpy.getValue())) {
+        for(let i = 0; i <= this.length()-1; ++i) {
+            switch(typeof(this.getValueAt(i))) {
                 case "number": {
-                    res *= cpy.getValue()
+                    res *= this.getValueAt(i)
                     break
                 }
 
                 case "string": {
                     try {
-                        res *= parseInt(cpy.getValue(), 10)
+                        res *= parseInt(this.getValueAt(i), 10)
                     } catch(nothing) {}
                     break
                 }
@@ -286,21 +262,18 @@ export default class ZStorage {
      * @return {number}
      */
     sum() {
-        let cpy = this.root
         let res = 0
-        
-        while(cpy.getNext() !== null) {
-            cpy = cpy.getNext()
 
-            switch(typeof(cpy.getValue())) {
+        for(let i = 0; i <= this.length()-1; ++i) {
+            switch(typeof(this.getValueAt(i))) {
                 case "number": {
-                    res += cpy.getValue()
+                    res += this.getValueAt(i)
                     break
                 }
 
                 case "string": {
                     try {
-                        res += parseInt(cpy.getValue(), 10)
+                        res += parseInt(this.getValueAt(i), 10)
                     } catch(nothing) {}
                     break
                 }
@@ -308,6 +281,56 @@ export default class ZStorage {
         }
 
         return res
+    }
+
+    /**
+     * Convert ZStorage to Array
+     * @return {[]}
+     */
+    toArray() {
+        let arr = []
+
+        for(let i = 0; i <= this.length()-1; ++i) {
+            arr.push(this.getValueAt(i))
+        }
+
+        return arr
+    }
+
+    /**
+     * Get the string value of this list. Syntax: <e1, e2, ...>
+     * @return {string} 
+     */
+    toString() {
+        let str = ""
+        
+        for(let i = 0; i <= this.length()-1; i++) {
+            switch(typeof(this.getValueAt(i))) {
+                case "string": {
+                    str += this.getValueAt(i)
+                    break
+                }
+
+                case "number": {
+                    str += this.getValueAt(i)
+                    break
+                }
+
+                case "object": {
+                    str += JSON.stringify(this.getValueAt(i), null, 0)
+                    break
+                }
+
+                case "boolean": {
+                    str += (this.getValueAt(i) ? "true" : "false")
+                    break
+                }
+            }
+
+            str += ','
+        }
+
+        return `<${str.slice(0, -1)}>`
     }
 
     /**
@@ -327,21 +350,5 @@ export default class ZStorage {
                 cpy.getValue()
             }`)
         }
-    }
-
-    /**
-     * Convert ZStorage to Array
-     * @return {[]}
-     */
-    toArray() {
-        let cpy = this.root
-        let arr = []
-        
-        while(cpy.getNext() !== null) {
-            cpy = cpy.getNext()
-            arr.push(cpy.getValue())
-        }
-
-        return arr
     }
 }
