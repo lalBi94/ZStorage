@@ -140,4 +140,85 @@ describe("ZStorage functions", () => {
         expect(l.getValueAt(0))
             .toBe("not x")
     })
+
+    it("Connecting 2 lists", () => {
+        let l = new ZStorage()
+        l.push(5)
+        l.push("sayo")
+
+        let l2 = new ZStorage()
+        l2.push(8.8)
+        l2.push({e: 4})
+
+        expect(l.length())
+            .toBe(2)
+
+        l.connect(l2)
+
+        expect(l.length())
+            .toBe(4)
+    })
+
+    it("Converting chain list to a natural {Array}", () => {
+        let l = new ZStorage()
+        l.push(85)
+        l.push({i:5,j:6})
+        l.push([true, 5, "c", {e:5}])
+
+        expect(l[0])
+            .toBe(undefined)
+
+        let toArray = l.toArray()
+
+        expect(toArray[1])
+            .toEqual({i:5,j:6})
+    })
+
+    it("Getting all of the index of value exclude {} and []", () => {
+        let l = new ZStorage()
+        l.push(40)
+        l.push({x:l.getValueAt(0)})
+        l.push([(5+l.getValueAt(1).x)])
+        l.push(40)
+
+        let id = l.getIndexOf(40)
+        expect(id)
+            .toEqual([0,3])
+    })
+
+    it("Calculating the sum of all of the number values", () => {
+        let l = new ZStorage()
+        l.push(5)
+        l.push(20)
+        l.push("5")
+        l.push(10)
+        l.push(50.5)
+        
+        expect(l.sum())
+            .toBe(90.5)
+    })
+
+    it("Calculating the average of all of the number values", () => {
+        let l = new ZStorage()
+        l.push(5)
+        l.push(20)
+        l.push("5")
+        l.push(10)
+        l.push(50.5)
+        
+        expect(l.average())
+            .toBe(18.1)
+    })
+
+    it("Calculating the product of all of the number values", () => {
+        let l = new ZStorage()
+        l.push(5)
+        l.push(20)
+        l.push("5")
+        l.push(10)
+        l.push(50.5)
+        
+        expect(l.product())
+            .toBe(252500)
+    })
 })

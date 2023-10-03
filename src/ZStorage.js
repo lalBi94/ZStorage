@@ -91,6 +91,21 @@ export default class ZStorage {
     }
 
     /**
+     * Connect 2 lists
+     * @param {ZStorage} l2 The second list
+     * @return {ZStorage}
+     */
+    connect(l2) {
+        let cpy = this.root
+
+        while(cpy.getNext() !== null) {
+            cpy = cpy.getNext()
+        }
+
+        cpy.setNext(l2.getRoot().getNext())
+    }
+
+    /**
      * Get value at index
      * @param {number} index The index of the nodes 
      * @return {any|null}
@@ -117,6 +132,23 @@ export default class ZStorage {
      */
     clear() {
         this.root = new ZNodes(-1)
+    }
+
+    /**
+     * Get the index of all of value
+     * @param {number|double|boolean|string} val
+     * @return {[number]|null}
+     */
+    getIndexOf(val) {
+        let stock = []
+
+        for(let i = 0; i <= this.length()-1; ++i) {
+            if(this.getValueAt(i) == val) {
+                stock.push(i)
+            }
+        }
+
+        return stock.length > 0 ? stock : null
     }
 
     /**
@@ -192,6 +224,93 @@ export default class ZStorage {
     }
 
     /**
+     * Get the average of numbers values in this list (string value like "4" will be convert)
+     *@return {number}
+     */
+    average() {
+        let cpy = this.root
+        let res = 0
+        
+        while(cpy.getNext() !== null) {
+            cpy = cpy.getNext()
+
+            switch(typeof(cpy.getValue())) {
+                case "number": {
+                    res += cpy.getValue()
+                    break
+                }
+
+                case "string": {
+                    try {
+                        res += parseInt(cpy.getValue(), 10)
+                    } catch(nothing) {}
+                    break
+                }
+            }
+        }
+
+        return (res/this.length())
+    }
+
+    /**
+     * Get the product of numbers in the list (string value like "4" will be convert)
+     * @return {number}
+     */
+    product() {
+        let cpy = this.root
+        let res = 1
+        
+        while(cpy.getNext() !== null) {
+            cpy = cpy.getNext()
+
+            switch(typeof(cpy.getValue())) {
+                case "number": {
+                    res *= cpy.getValue()
+                    break
+                }
+
+                case "string": {
+                    try {
+                        res *= parseInt(cpy.getValue(), 10)
+                    } catch(nothing) {}
+                    break
+                }
+            }
+        }
+
+        return res
+    }
+
+    /**
+     * Additionate all of numbers in the list (string value like "4" will be convert)
+     * @return {number}
+     */
+    sum() {
+        let cpy = this.root
+        let res = 0
+        
+        while(cpy.getNext() !== null) {
+            cpy = cpy.getNext()
+
+            switch(typeof(cpy.getValue())) {
+                case "number": {
+                    res += cpy.getValue()
+                    break
+                }
+
+                case "string": {
+                    try {
+                        res += parseInt(cpy.getValue(), 10)
+                    } catch(nothing) {}
+                    break
+                }
+            }
+        }
+
+        return res
+    }
+
+    /**
      * [DEBUG] Print the chain list 
      * @return {void}
      */
@@ -208,5 +327,21 @@ export default class ZStorage {
                 cpy.getValue()
             }`)
         }
+    }
+
+    /**
+     * Convert ZStorage to Array
+     * @return {[]}
+     */
+    toArray() {
+        let cpy = this.root
+        let arr = []
+        
+        while(cpy.getNext() !== null) {
+            cpy = cpy.getNext()
+            arr.push(cpy.getValue())
+        }
+
+        return arr
     }
 }
