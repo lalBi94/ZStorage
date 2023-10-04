@@ -25,6 +25,7 @@ export default class ZStorage {
      *  2) list.breakAt(1)
      *  3) list = [0]:1 -> [1]:32 
      * @param {number} index Index of the new last node
+     * @return {void}
      */
     breakAt(index) {
         let cpy = this.root
