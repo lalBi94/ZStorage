@@ -12,10 +12,6 @@ import ZNodes from "./ZNodes.js"
  */
 export default class ZStorage {
     constructor() {
-        /**
-         * Source of the list
-         * @type {ZNodes} root
-         */
         this.root = new ZNodes(-1)
     }
 

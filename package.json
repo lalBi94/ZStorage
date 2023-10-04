@@ -4,8 +4,7 @@
   "description": "Chain list package",
   "scripts": {
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
-    "doc": "npx jsdoc ./src/ZStorage.js ./src/ZNodes.js",
-    "build": "npm run doc && git add * && git commit -m $ && git push"
+    "doc": "npx jsdoc ./src/ZStorage.js ./src/ZNodes.js"
   },
   "keywords": [],
   "author": "",
