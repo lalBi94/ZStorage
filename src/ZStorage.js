@@ -137,7 +137,7 @@ export default class ZStorage {
     /**
      * Get the index of all of value
      * @param {number|double|boolean|string} val
-     * @return {[number]|null}
+     * @return {array<number>|null}
      */
     getIndexOf(val) {
         let stock = []
