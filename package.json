@@ -1,9 +1,10 @@
 {
-  "name": "test",
-  "version": "0",
+  "name": "ZStorage",
+  "version": "1.0",
   "description": "Chain list package",
   "scripts": {
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "doc": "npx jsdoc ./src/ZStorage.js ./src/ZNodes.js"
   },
   "keywords": [],
   "author": "",

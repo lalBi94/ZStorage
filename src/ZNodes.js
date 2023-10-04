@@ -8,9 +8,6 @@
  * @contact : bilal@boudjemline.fr
  */
 export default class ZNodes {
-    /**
-     * @param {any} val The value initialized into this node
-     */
     constructor(val) {
         this.val = val
         this.next = null
