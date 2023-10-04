@@ -234,4 +234,50 @@ describe("ZStorage functions", () => {
         expect(l.toString())
             .toBe("<[{\"e\":5},{\"x\":[5,{\"x\":3}]}],1,salut,4,{\"x\":5.5,\"y\":6,\"t\":[5,5],\"s\":\"s\"},true>")
     })
+
+    it("Getting node at index", () => {
+        let l = new ZStorage()
+        l.push([{e:5},{x:[5,{x:3}]}])
+        l.push("abracadabra")
+
+        l.getNodeAt(1)
+        
+        expect(l.getNodeAt(1))
+            .toEqual(new ZNodes("abracadabra"))
+    })
+
+    it("Permuting nodes value between us", () => {
+        let l = new ZStorage()
+        l.push([{e:5},{x:[5,{x:3}]}])
+        l.push("abracadabra")
+
+        l.permute(0, 1)
+
+        expect(l.getValueAt(0))
+            .toBe("abracadabra")
+
+        expect(l.getValueAt(1))
+            .toEqual([{e:5},{x:[5,{x:3}]}])
+    })
+
+    it("Removing all explicit value in list", () => {
+        let l = new ZStorage()
+        l.push(5)
+        l.push({a:[4.4, {b:5}]})
+        l.push(5)
+        l.push(5)
+        l.push([{c:{d:4,g:[false,5, true]}}])
+        l.push("yo")
+
+        expect(l.length())
+            .toBe(6)
+
+        let removed = l.removeAll([[{c:{d:4,g:[false,5, true]}}], "yo", 5])
+
+        expect(l.length())
+            .toBe(1)
+
+        expect(removed)
+            .toEqual([{id:0,val:5},{id:2,val:5},{id:3,val:5},{id:4,val:[{c:{d:4,g:[false,5, true]}}]},{id:5,val:"yo"}])
+    })
 })

@@ -124,6 +124,44 @@ export default class ZStorage {
     }
 
     /**
+     * Remove the all of value and return the supress
+     * @param {array<any>} val The value to supress (only with this type)
+     * @return {array<{id:any}>}
+     */
+    removeAll(val) {
+        if(val.length === 0) return {}
+
+        let l = new ZStorage()
+        let rm = []
+        let cpy = this.root
+        let id = 0
+
+        let valStr = []
+        const fnValStr = () => {
+            for(let i = 0; i <= val.length-1; ++i) valStr.push(JSON.stringify(val[i]))
+        }
+        
+        
+        while(cpy.getNext() !== null) {
+            cpy = cpy.getNext()
+
+            if(typeof(cpy.getValue() === "object")) fnValStr()
+
+            if(val.includes(cpy.getValue()) || valStr.includes(JSON.stringify(cpy.getValue()))) {
+                    rm.push({id:id,val:cpy.getValue()})
+            } else {
+                l.push(cpy.getValue())
+            }
+
+            ++id
+        }
+
+        this.root = l.getRoot()
+
+        return rm
+    }
+
+    /**
      * Clear the list
      * @return {void}
      */
@@ -203,6 +241,39 @@ export default class ZStorage {
      */
     getRoot() {
         return this.root
+    }
+
+    /**
+     * Get node at index
+     * @param {number} index
+     * @return {ZNodes}
+     */
+    getNodeAt(index) {
+        let cpy = this.root
+        let id = 0
+        
+        while(id <= index) {
+            ++id
+            cpy = cpy.getNext()
+        }
+        
+        return cpy
+    }
+
+    /**
+     * Permute value i1 and i2 and return the last value of i1 & i2
+     * @param {number} i1 first index
+     * @param {number} i2 second index
+     * @return {{val1:any, val2:any}}
+     */
+    permute(i1, i2) {
+        const v1 = this.getValueAt(i1)
+        const v2 = this.getValueAt(i2)
+
+        this.modifyValueAt(i1, v2)
+        this.modifyValueAt(i2, v1)
+
+        return {val1:v1,val2:v2}
     }
 
     /**
