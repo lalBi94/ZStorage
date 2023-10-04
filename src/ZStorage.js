@@ -5,7 +5,7 @@ import ZNodes from "./ZNodes.js"
  * @version 1.0
  * @requires ZNodes
  * @license MIT
- * @author : General Zod (lalBi94)
+ * @author General Zod (lalBi94)
  * @link https://github.com/lalBi94
  * @copyright © 2023 Boudjemline 
  * @contact : bilal@boudjemline.fr

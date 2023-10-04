@@ -4,13 +4,15 @@
   "description": "Chain list package",
   "scripts": {
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
-    "doc": "npx jsdoc ./src/ZStorage.js ./src/ZNodes.js"
+    "doc": "npx jsdoc ./src/ZStorage.js ./src/ZNodes.js",
+    "customdoc": "npx jsdoc --configure jsdoc.json --verbose ./src/ZStorage.js ./src/ZNodes.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "module",
   "devDependencies": {
+    "clean-jsdoc-theme": "^4.2.13",
     "jest": "^29.7.0"
   }
 }

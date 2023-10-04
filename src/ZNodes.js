@@ -1,7 +1,7 @@
 /**
  * @name ZNodes is necessary to create a ZStorage.
  * @version 1.0
- * @author : General Zod (lalBi94)
+ * @author General Zod (lalBi94)
  * @link https://github.com/lalBi94
  * @license MIT
  * @copyright © 2023 Boudjemline 
