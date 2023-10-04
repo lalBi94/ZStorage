@@ -8,8 +8,8 @@
     "customdoc": "npx jsdoc --configure jsdoc.json --verbose ./src/ZStorage.js ./src/ZNodes.js"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "General Zod (lalBi94)",
+  "license": "MIT",
   "type": "module",
   "devDependencies": {
     "clean-jsdoc-theme": "^4.2.13",
