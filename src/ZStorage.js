@@ -125,29 +125,22 @@ export default class ZStorage {
 
     /**
      * Remove the all of value and return the supress
-     * @param {array<any>} val The value to supress (only with this type)
+     * @param {array<any>|"all"} val The value to supress (only with this type)
      * @return {array<{id:any}>}
      */
-    removeAll(val) {
-        if(val.length === 0) return {}
-
+    removeAll(val="all") {
         let l = new ZStorage()
         let rm = []
         let cpy = this.root
         let id = 0
 
         let valStr = []
-        const fnValStr = () => {
-            for(let i = 0; i <= val.length-1; ++i) valStr.push(JSON.stringify(val[i]))
-        }
-        
+        for(let i = 0; i <= val.length-1; ++i) valStr.push(JSON.stringify(val[i]))
         
         while(cpy.getNext() !== null) {
             cpy = cpy.getNext()
 
-            if(typeof(cpy.getValue() === "object")) fnValStr()
-
-            if(val.includes(cpy.getValue()) || valStr.includes(JSON.stringify(cpy.getValue()))) {
+            if(val === "all" || val.includes(cpy.getValue()) || valStr.includes(JSON.stringify(cpy.getValue()))) {
                     rm.push({id:id,val:cpy.getValue()})
             } else {
                 l.push(cpy.getValue())
@@ -156,7 +149,11 @@ export default class ZStorage {
             ++id
         }
 
-        this.root = l.getRoot()
+        if(val === "all") {
+            this.clear()
+        } else {
+            this.root = l.getRoot() 
+        }
 
         return rm
     }

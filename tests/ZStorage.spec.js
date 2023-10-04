@@ -272,12 +272,12 @@ describe("ZStorage functions", () => {
         expect(l.length())
             .toBe(6)
 
-        let removed = l.removeAll([[{c:{d:4,g:[false,5, true]}}], "yo", 5])
+        let removed = l.removeAll()
 
         expect(l.length())
-            .toBe(1)
+            .toBe(0)
 
         expect(removed)
-            .toEqual([{id:0,val:5},{id:2,val:5},{id:3,val:5},{id:4,val:[{c:{d:4,g:[false,5, true]}}]},{id:5,val:"yo"}])
+            .toEqual([{id:0,val:5},{id:1,val:{a:[4.4, {b:5}]}},{id:2,val:5},{id:3,val:5},{id:4,val:[{c:{d:4,g:[false,5, true]}}]},{id:5,val:"yo"}])
     })
 })
