@@ -351,4 +351,18 @@ describe("ZStorage functions", () => {
             { id: 3, val: "power" },
         ]);
     });
+
+    //TODO: this test & function ZStorage.parse
+    /*it("Parsing str to list", () => {
+        let l = new ZStorage()
+        l.push(2)
+        l.push({e:9})
+        l.push([3,"f"])
+        l.push(false)
+        l.push(-6.3)
+        l.parse("<1>")
+
+        expect(l.toString())
+            .toEqual("<1>")
+    })*/
 });

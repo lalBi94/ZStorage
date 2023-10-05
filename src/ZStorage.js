@@ -557,6 +557,14 @@ export default class ZStorage {
     }
 
     /**
+     * Convert string value argument to ZStorage object
+     * @param {string} str result of this.toString(): <e1, e2, ...>
+     * @return {ZNodes}
+     */
+    //TODO: this function & test
+    parse(str) {}
+
+    /**
      * [DEBUG] Print the chain list
      * @return {void}
      */
