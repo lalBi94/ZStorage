@@ -204,7 +204,7 @@ describe("ZStorage functions", () => {
         l.push(true);
 
         expect(l.toString()).toBe(
-            '<[{"e":5},{"x":[5,{"x":3}]}],1,salut,4,{"x":5.5,"y":6,"t":[5,5],"s":"s"},true>'
+            '<[{"e":5},{"x":[5,{"x":3}]}],1,"salut",4,{"x":5.5,"y":6,"t":[5,5],"s":"s"},true>'
         );
     });
 
@@ -351,18 +351,4 @@ describe("ZStorage functions", () => {
             { id: 3, val: "power" },
         ]);
     });
-
-    //TODO: this test & function ZStorage.parse
-    /*it("Parsing str to list", () => {
-        let l = new ZStorage()
-        l.push(2)
-        l.push({e:9})
-        l.push([3,"f"])
-        l.push(false)
-        l.push(-6.3)
-        l.parse("<1>")
-
-        expect(l.toString())
-            .toEqual("<1>")
-    })*/
 });
