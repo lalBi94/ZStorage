@@ -128,6 +128,8 @@ export default class ZStorage {
         }
 
         cpy.setNext(l2.getRoot().getNext())
+
+        return this
     }
 
     /**
@@ -136,7 +138,7 @@ export default class ZStorage {
      * @return {any|null}
      */
     getValueAt(index) {
-        if(this.length() >= index) {
+        if(this.length() > index) {
             let cpy = this.root
             let counter = 0
 
@@ -153,29 +155,22 @@ export default class ZStorage {
 
     /**
      * Remove the all of value and return the supress
-     * @param {array&lt;any>} val The value to supress (only with this type)
+     * @param {array&lt;any>|"all"} val The value to supress (only with this type)
      * @return {array&lt;{id:any}>}
      */
-    removeAll(val) {
-        if(val.length === 0) return {}
-
+    removeAll(val="all") {
         let l = new ZStorage()
         let rm = []
         let cpy = this.root
         let id = 0
 
         let valStr = []
-        const fnValStr = () => {
-            for(let i = 0; i &lt;= val.length-1; ++i) valStr.push(JSON.stringify(val[i]))
-        }
-        
+        for(let i = 0; i &lt;= val.length-1; ++i) valStr.push(JSON.stringify(val[i]))
         
         while(cpy.getNext() !== null) {
             cpy = cpy.getNext()
 
-            if(typeof(cpy.getValue() === "object")) fnValStr()
-
-            if(val.includes(cpy.getValue()) || valStr.includes(JSON.stringify(cpy.getValue()))) {
+            if(val === "all" || val.includes(cpy.getValue()) || valStr.includes(JSON.stringify(cpy.getValue()))) {
                     rm.push({id:id,val:cpy.getValue()})
             } else {
                 l.push(cpy.getValue())
@@ -184,7 +179,11 @@ export default class ZStorage {
             ++id
         }
 
-        this.root = l.getRoot()
+        if(val === "all") {
+            this.clear()
+        } else {
+            this.setRoot(l.getRoot())
+        }
 
         return rm
     }
@@ -229,6 +228,17 @@ export default class ZStorage {
         } else {
             return null
         }
+    }
+
+    /**
+     * Set a new root and return the last root
+     * @param {ZNodes} newRoot The new root of the list
+     * @return {ZNodes}
+     */
+    setRoot(newRoot) {
+        const cpy = this.root
+        this.root = newRoot
+        return cpy
     }
 
     /**
@@ -380,6 +390,10 @@ export default class ZStorage {
     }
 
     /**
+    
+     */
+
+    /**
      * Convert ZStorage to Array
      * @return {array}
      */
@@ -430,6 +444,133 @@ export default class ZStorage {
     }
 
     /**
+     * Put id for each element ans return the new list (didn't affect this.root)
+     * @return {ZStorage}
+     */
+    withIDs() {
+        let l = new ZStorage()
+
+        for(let i = 0; i &lt;= this.length()-1; ++i) {
+            l.push({id: i, val: this.getValueAt(i)})
+        }
+
+        return l
+    }
+
+    /**
+     * Make action for specific element
+     * @param {function} action
+     * @param {function} condition
+     * @return {ZNodes}
+     */
+    action(action, condition) {
+        let cpy = this.root
+
+        while(cpy.getNext() !== null) {
+            cpy = cpy.getNext()
+            
+            if(condition(cpy.getValue())) {
+                cpy.setValue(action(cpy.getValue()))
+            }
+        }
+
+        return this.root
+    }
+
+    /**
+     * Remove all specifics types
+     * @param {array&lt;"number"|"boolean"|"object"|"string">} types
+     * @return {[{id:number,val:any, type:string}]}
+     */
+    removeTypes(types) {
+        let l = new ZStorage()
+        let stock = []
+        
+        for(let i = 0; i &lt;= this.length()-1; ++i) {
+            if(!types.includes(typeof(this.getValueAt(i)))) {
+                l.push(this.getValueAt(i))
+            } else {
+                stock.push({id:i,val:this.getValueAt(i),type:typeof(this.getValueAt(i))})
+            }
+        }
+
+        this.setRoot(l.getRoot())
+
+        return stock
+    }
+
+    /**
+     * Check if e is contains in [...]
+     * @param {array&lt;any>} values Values to check
+     * @return {boolean}
+     */
+    includes(values) {
+        for(let i = 0; i &lt;= this.length()-1; ++i) {
+            switch(typeof(this.getValueAt(i))) {
+                case "object": {
+                    for(let j = 0; j &lt;= values.length-1; ++j) {
+                        if(JSON.stringify(values[j]) === JSON.stringify(this.getValueAt(i))) return true
+                    }
+                    break
+                }
+
+                default: {
+                    if(values.includes(this.getValueAt(i))) return true
+                    break
+                }
+            }
+        }
+
+        return false
+    }
+
+    /**
+     * Fill the list with any elements
+     * @param {{n1:number, n2:number}} range Where you want fill ?
+     * @param {any} val The value for the node (default 0)
+     * @return {ZNodes}
+     */
+    fill(range, val=0) {
+        if(range.n2 > range.n1) {
+            for(let i = range.n1; i &lt;= range.n2; ++i) {
+                if(this.getValueAt(i)) {
+                    this.modifyValueAt(i, val)
+                } else {
+                    this.push(val)
+                }
+            }
+
+            return this.root
+        } else {
+            return null
+        }
+    }
+
+    /**
+     * Check and return values = to regex expression
+     * @param {regex} exp The regex expression
+     * @return {array&lt;{id:number,val:any}>}
+     */
+    zRegex(exp) {
+        let stock = []
+        for(let i = 0; i &lt;= this.length()-1; ++i) {
+            switch(typeof(this.getValueAt(i))) {
+                case "object": {
+                    if(exp.test(JSON.stringify(this.getValueAt(i)))) stock.push({id:i,val:this.getValueAt(i)})
+                    break
+                }
+
+                default: {
+                    if(exp.test(this.getValueAt(i))) stock.push({id:i,val:this.getValueAt(i)})
+                    break
+                }
+            }
+        }
+
+        return stock
+    }
+
+    /**
      * [DEBUG] Print the chain list 
      * @return {void}
      */
@@ -457,13 +598,13 @@ export default class ZStorage {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#ZNodesisnecessarytocreateaZStorage.">ZNodes is necessary to create a ZStorage.</a></li><li><a href="global.html#ZStorageListcontainsalotofnodes.">ZStorage List contains a lot of nodes.</a></li><li><a href="global.html#average">average</a></li><li><a href="global.html#breakAt">breakAt</a></li><li><a href="global.html#breakNext">breakNext</a></li><li><a href="global.html#clear">clear</a></li><li><a href="global.html#connect">connect</a></li><li><a href="global.html#copy">copy</a></li><li><a href="global.html#equalTo">equalTo</a></li><li><a href="global.html#equals">equals</a></li><li><a href="global.html#getIndexOf">getIndexOf</a></li><li><a href="global.html#getNext">getNext</a></li><li><a href="global.html#getNodeAt">getNodeAt</a></li><li><a href="global.html#getRoot">getRoot</a></li><li><a href="global.html#getValue">getValue</a></li><li><a href="global.html#getValueAt">getValueAt</a></li><li><a href="global.html#length">length</a></li><li><a href="global.html#modifyValueAt">modifyValueAt</a></li><li><a href="global.html#permute">permute</a></li><li><a href="global.html#pop">pop</a></li><li><a href="global.html#print">print</a></li><li><a href="global.html#product">product</a></li><li><a href="global.html#push">push</a></li><li><a href="global.html#removeAll">removeAll</a></li><li><a href="global.html#setNext">setNext</a></li><li><a href="global.html#setValue">setValue</a></li><li><a href="global.html#shift">shift</a></li><li><a href="global.html#sum">sum</a></li><li><a href="global.html#toArray">toArray</a></li><li><a href="global.html#toString">toString</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#ZNodesisnecessarytocreateaZStorage.">ZNodes is necessary to create a ZStorage.</a></li><li><a href="global.html#ZStorageListcontainsalotofnodes.">ZStorage List contains a lot of nodes.</a></li><li><a href="global.html#action">action</a></li><li><a href="global.html#average">average</a></li><li><a href="global.html#breakAt">breakAt</a></li><li><a href="global.html#breakNext">breakNext</a></li><li><a href="global.html#clear">clear</a></li><li><a href="global.html#connect">connect</a></li><li><a href="global.html#copy">copy</a></li><li><a href="global.html#equalTo">equalTo</a></li><li><a href="global.html#equals">equals</a></li><li><a href="global.html#fill">fill</a></li><li><a href="global.html#getIndexOf">getIndexOf</a></li><li><a href="global.html#getNext">getNext</a></li><li><a href="global.html#getNodeAt">getNodeAt</a></li><li><a href="global.html#getRoot">getRoot</a></li><li><a href="global.html#getValue">getValue</a></li><li><a href="global.html#getValueAt">getValueAt</a></li><li><a href="global.html#includes">includes</a></li><li><a href="global.html#length">length</a></li><li><a href="global.html#modifyValueAt">modifyValueAt</a></li><li><a href="global.html#permute">permute</a></li><li><a href="global.html#pop">pop</a></li><li><a href="global.html#print">print</a></li><li><a href="global.html#product">product</a></li><li><a href="global.html#push">push</a></li><li><a href="global.html#removeAll">removeAll</a></li><li><a href="global.html#removeTypes">removeTypes</a></li><li><a href="global.html#setNext">setNext</a></li><li><a href="global.html#setRoot">setRoot</a></li><li><a href="global.html#setValue">setValue</a></li><li><a href="global.html#shift">shift</a></li><li><a href="global.html#sum">sum</a></li><li><a href="global.html#toArray">toArray</a></li><li><a href="global.html#toString">toString</a></li><li><a href="global.html#withIDs">withIDs</a></li><li><a href="global.html#zRegex">zRegex</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Wed Oct 04 2023 20:01:09 GMT+0200 (heure d’été d’Europe centrale)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Thu Oct 05 2023 16:21:52 GMT+0200 (heure d’été d’Europe centrale)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -280,4 +280,100 @@ describe("ZStorage functions", () => {
         expect(removed)
             .toEqual([{id:0,val:5},{id:1,val:{a:[4.4, {b:5}]}},{id:2,val:5},{id:3,val:5},{id:4,val:[{c:{d:4,g:[false,5, true]}}]},{id:5,val:"yo"}])
     })
+
+    it("Putting id in each element (didnt affect the list)", () => {
+        let l = new ZStorage()
+        l.push({e:3})
+        l.push(3)
+        l.push("quoicoubeh")
+        const wId = l.withIDs()
+
+        expect(wId.toString())
+            .toBe("<{\"id\":0,\"val\":{\"e\":3}},{\"id\":1,\"val\":3},{\"id\":2,\"val\":\"quoicoubeh\"}>")
+    })
+
+    it("Making action in list for a specifics value", () => {
+        let l = new ZStorage()
+        l.push(1)
+        l.push(2)
+        l.push(3)
+        l.push(4)
+
+        l.action((e) => {
+            return e+1
+        }, (e) => {
+            return e%2===0
+        })
+
+        l.action((e) => {
+            return e*2
+        }, (e) => {
+            return e === 3 || e === 5
+        })
+
+        expect(l.getValueAt(1))
+            .toBe(6)
+
+        expect(l.getValueAt(3))
+            .toBe(10)
+    })
+
+    it("Remove all types from list", () => {
+        let l = new ZStorage()
+        l.push(-5)
+        l.push(5*5+l.sum())
+        l.push({e:5,f:l.average()})
+        l.push(":(" + l.product())
+        l.push(typeof(3+""))
+        let removed = l.removeTypes(["number", "object"])
+
+        expect(l.length())
+            .toBe(2)
+        
+        expect(l.getValueAt(1))
+            .toEqual("string")
+        
+        expect(removed)
+            .toEqual([
+                {"id":0,"type":"number","val":-5},
+                {"id":1,"type":"number","val":20},
+                {"id":2,"type":"object","val":{"e":5,"f":7.5}
+            }])
+    })
+
+    it("Check if 3 is contain in <1,4,3>", () => {
+        let l = new ZStorage()
+        l.push(1)
+        l.push([5])
+        l.push(3)
+        l.push({e:"e",t:true})
+        
+        expect(l.includes([6, 6, {e:"e",t:true}]))
+            .toBe(true)
+    })
+
+    it("Filling a list from x to y", () => {
+        let l = new ZStorage()
+        l.push(1)
+        l.push(4)
+
+        l.fill({n1:1,n2:3}, {i:0,j:0})
+
+        expect(l.length()) 
+            .toBe(4)
+        
+        expect(l.toString())
+            .toBe("<1,{\"i\":0,\"j\":0},{\"i\":0,\"j\":0},{\"i\":0,\"j\":0}>")
+    })
+
+    it("Regexing", () => {
+        let l = new ZStorage()
+        l.push(5)
+        l.push([1,2,3])
+        l.push({id:4,po:6})
+        l.push("power")
+
+        expect(l.zRegex(/po/))
+            .toEqual([{id:2,val:{id:4,po:6}},{id:3,val:"power"}])
+    })
 })

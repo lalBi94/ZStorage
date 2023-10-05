@@ -100,6 +100,8 @@ export default class ZStorage {
         }
 
         cpy.setNext(l2.getRoot().getNext())
+
+        return this
     }
 
     /**
@@ -108,7 +110,7 @@ export default class ZStorage {
      * @return {any|null}
      */
     getValueAt(index) {
-        if(this.length() >= index) {
+        if(this.length() > index) {
             let cpy = this.root
             let counter = 0
 
@@ -152,7 +154,7 @@ export default class ZStorage {
         if(val === "all") {
             this.clear()
         } else {
-            this.root = l.getRoot() 
+            this.setRoot(l.getRoot())
         }
 
         return rm
@@ -198,6 +200,17 @@ export default class ZStorage {
         } else {
             return null
         }
+    }
+
+    /**
+     * Set a new root and return the last root
+     * @param {ZNodes} newRoot The new root of the list
+     * @return {ZNodes}
+     */
+    setRoot(newRoot) {
+        const cpy = this.root
+        this.root = newRoot
+        return cpy
     }
 
     /**
@@ -349,6 +362,10 @@ export default class ZStorage {
     }
 
     /**
+    
+     */
+
+    /**
      * Convert ZStorage to Array
      * @return {array}
      */
@@ -396,6 +413,133 @@ export default class ZStorage {
         }
 
         return `<${str.slice(0, -1)}>`
+    }
+
+    /**
+     * Put id for each element ans return the new list (didn't affect this.root)
+     * @return {ZStorage}
+     */
+    withIDs() {
+        let l = new ZStorage()
+
+        for(let i = 0; i <= this.length()-1; ++i) {
+            l.push({id: i, val: this.getValueAt(i)})
+        }
+
+        return l
+    }
+
+    /**
+     * Make action for specific element
+     * @param {function} action
+     * @param {function} condition
+     * @return {ZNodes}
+     */
+    action(action, condition) {
+        let cpy = this.root
+
+        while(cpy.getNext() !== null) {
+            cpy = cpy.getNext()
+            
+            if(condition(cpy.getValue())) {
+                cpy.setValue(action(cpy.getValue()))
+            }
+        }
+
+        return this.root
+    }
+
+    /**
+     * Remove all specifics types
+     * @param {array<"number"|"boolean"|"object"|"string">} types
+     * @return {[{id:number,val:any, type:string}]}
+     */
+    removeTypes(types) {
+        let l = new ZStorage()
+        let stock = []
+        
+        for(let i = 0; i <= this.length()-1; ++i) {
+            if(!types.includes(typeof(this.getValueAt(i)))) {
+                l.push(this.getValueAt(i))
+            } else {
+                stock.push({id:i,val:this.getValueAt(i),type:typeof(this.getValueAt(i))})
+            }
+        }
+
+        this.setRoot(l.getRoot())
+
+        return stock
+    }
+
+    /**
+     * Check if e is contains in [...]
+     * @param {array<any>} values Values to check
+     * @return {boolean}
+     */
+    includes(values) {
+        for(let i = 0; i <= this.length()-1; ++i) {
+            switch(typeof(this.getValueAt(i))) {
+                case "object": {
+                    for(let j = 0; j <= values.length-1; ++j) {
+                        if(JSON.stringify(values[j]) === JSON.stringify(this.getValueAt(i))) return true
+                    }
+                    break
+                }
+
+                default: {
+                    if(values.includes(this.getValueAt(i))) return true
+                    break
+                }
+            }
+        }
+
+        return false
+    }
+
+    /**
+     * Fill the list with any elements
+     * @param {{n1:number, n2:number}} range Where you want fill ?
+     * @param {any} val The value for the node (default 0)
+     * @return {ZNodes}
+     */
+    fill(range, val=0) {
+        if(range.n2 > range.n1) {
+            for(let i = range.n1; i <= range.n2; ++i) {
+                if(this.getValueAt(i)) {
+                    this.modifyValueAt(i, val)
+                } else {
+                    this.push(val)
+                }
+            }
+
+            return this.root
+        } else {
+            return null
+        }
+    }
+
+    /**
+     * Check and return values = to regex expression
+     * @param {regex} exp The regex expression
+     * @return {array<{id:number,val:any}>}
+     */
+    zRegex(exp) {
+        let stock = []
+        for(let i = 0; i <= this.length()-1; ++i) {
+            switch(typeof(this.getValueAt(i))) {
+                case "object": {
+                    if(exp.test(JSON.stringify(this.getValueAt(i)))) stock.push({id:i,val:this.getValueAt(i)})
+                    break
+                }
+
+                default: {
+                    if(exp.test(this.getValueAt(i))) stock.push({id:i,val:this.getValueAt(i)})
+                    break
+                }
+            }
+        }
+
+        return stock
     }
 
     /**
