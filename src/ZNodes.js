@@ -4,13 +4,13 @@
  * @author General Zod (lalBi94)
  * @link https://github.com/lalBi94
  * @license MIT
- * @copyright © 2023 Boudjemline 
+ * @copyright © 2023 Boudjemline
  * @contact : bilal@boudjemline.fr
  */
 export default class ZNodes {
     constructor(val) {
-        this.val = val
-        this.next = null
+        this.val = val;
+        this.next = null;
     }
 
     /**
@@ -19,7 +19,7 @@ export default class ZNodes {
      * @return {boolean}
      */
     equals(val) {
-        return val === this.val
+        return val === this.val;
     }
 
     /**
@@ -27,7 +27,7 @@ export default class ZNodes {
      * @return {void}
      */
     breakNext() {
-        this.next = null
+        this.next = null;
     }
 
     /**
@@ -35,7 +35,7 @@ export default class ZNodes {
      * @return {ZNodes}
      */
     getNext() {
-        return this.next
+        return this.next;
     }
 
     /**
@@ -43,7 +43,7 @@ export default class ZNodes {
      * @return {any}
      */
     getValue() {
-        return this.val
+        return this.val;
     }
 
     /**
@@ -52,7 +52,7 @@ export default class ZNodes {
      * @return {void}
      */
     setNext(next) {
-        this.next = next
+        this.next = next;
     }
 
     /**
@@ -61,6 +61,6 @@ export default class ZNodes {
      * @return {void}
      */
     setValue(val) {
-        this.val = val
+        this.val = val;
     }
 }
