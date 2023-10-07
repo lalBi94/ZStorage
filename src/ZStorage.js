@@ -148,7 +148,10 @@ export default class ZStorage {
                 val.includes(cpy.getValue()) ||
                 valStr.includes(JSON.stringify(cpy.getValue()))
             ) {
-                rm.push({ id: id, val: cpy.getValue() });
+                rm.push({
+                    id: id,
+                    val: cpy.getValue()
+                });
             } else {
                 l.push(cpy.getValue());
             }
@@ -175,16 +178,14 @@ export default class ZStorage {
 
     /**
      * Get the index of all of value
-     * @param {number|double|boolean|string} val
+     * @param {number|boolean|string} val
      * @return {array<number>|null}
      */
-    getIndexOf(val) {
+    find(val) {
         let stock = [];
 
         for (let i = 0; i <= this.length() - 1; ++i) {
-            if (this.getValueAt(i) == val) {
-                stock.push(i);
-            }
+            if (this.getValueAt(i) === val || JSON.stringify(this.getValueAt(i)) === JSON.stringify(val)) stock.push(i);
         }
 
         return stock.length > 0 ? stock : null;
@@ -288,7 +289,10 @@ export default class ZStorage {
         this.modifyValueAt(i1, v2);
         this.modifyValueAt(i2, v1);
 
-        return { val1: v1, val2: v2 };
+        return {
+            val1: v1,
+            val2: v2
+        };
     }
 
     /**
@@ -331,7 +335,7 @@ export default class ZStorage {
                 case "string": {
                     try {
                         res *= parseInt(this.getValueAt(i), 10);
-                    } catch (nothing) { }
+                    } catch (nothing) {}
                     break;
                 }
             }
@@ -357,7 +361,7 @@ export default class ZStorage {
                 case "string": {
                     try {
                         res += parseInt(this.getValueAt(i), 10);
-                    } catch (nothing) { }
+                    } catch (nothing) {}
                     break;
                 }
             }
@@ -365,10 +369,6 @@ export default class ZStorage {
 
         return res;
     }
-
-    /**
-        
-         */
 
     /**
      * Convert ZStorage to Array
@@ -428,7 +428,10 @@ export default class ZStorage {
         let l = new ZStorage();
 
         for (let i = 0; i <= this.length() - 1; ++i) {
-            l.push({ id: i, val: this.getValueAt(i) });
+            l.push({
+                id: i,
+                val: this.getValueAt(i)
+            });
         }
 
         return l;
@@ -436,8 +439,8 @@ export default class ZStorage {
 
     /**
      * Make action for specific element
-     * @param {function} action
-     * @param {function} condition
+     * @param {function(e):any} action Action(s) per elements
+     * @param {function(e):boolean} condition ex : () => e1 === e2
      * @return {ZNodes}
      */
     action(action, condition) {
@@ -445,10 +448,7 @@ export default class ZStorage {
 
         while (cpy.getNext() !== null) {
             cpy = cpy.getNext();
-
-            if (condition(cpy.getValue())) {
-                cpy.setValue(action(cpy.getValue()));
-            }
+            if (condition(cpy.getValue())) cpy.setValue(action(cpy.getValue()));
         }
 
         return this.root;
@@ -532,22 +532,29 @@ export default class ZStorage {
 
     /**
      * Check and return values = to regex expression
-     * @param {regex} exp The regex expression
+     * @param {RegExp} exp The regex expression
      * @return {array<{id:number,val:any}>}
      */
     zRegex(exp) {
         let stock = [];
+
         for (let i = 0; i <= this.length() - 1; ++i) {
             switch (typeof this.getValueAt(i)) {
                 case "object": {
                     if (exp.test(JSON.stringify(this.getValueAt(i))))
-                        stock.push({ id: i, val: this.getValueAt(i) });
+                        stock.push({
+                            id: i,
+                            val: this.getValueAt(i)
+                        });
                     break;
                 }
 
                 default: {
                     if (exp.test(this.getValueAt(i)))
-                        stock.push({ id: i, val: this.getValueAt(i) });
+                        stock.push({
+                            id: i,
+                            val: this.getValueAt(i)
+                        });
                     break;
                 }
             }
@@ -569,10 +576,9 @@ export default class ZStorage {
             cpy = cpy.getNext();
 
             console.log(
-                `${id}: ${cpy.getValue() instanceof Object
-                    ? JSON.stringify(cpy.getValue())
-                    : cpy.getValue()
-                }`
+                `${id}: ${cpy.getValue() instanceof Object ? 
+                    JSON.stringify(cpy.getValue()) : 
+                    cpy.getValue()}`
             );
         }
     }

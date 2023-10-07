@@ -20,7 +20,10 @@ describe("ZStorage functions", () => {
         l.push(false);
         l.push([]);
         l.push(0);
-        l.push({ x: 1, y: 2 });
+        l.push({
+            x: 1,
+            y: 2
+        });
         l.push([true, null, NaN, 5]);
 
         expect(l.length()).toBe(7);
@@ -128,7 +131,9 @@ describe("ZStorage functions", () => {
 
         let l2 = new ZStorage();
         l2.push(8.8);
-        l2.push({ e: 4 });
+        l2.push({
+            e: 4
+        });
 
         expect(l.length()).toBe(2);
 
@@ -140,25 +145,37 @@ describe("ZStorage functions", () => {
     it("Converting chain list to a natural {Array}", () => {
         let l = new ZStorage();
         l.push(85);
-        l.push({ i: 5, j: 6 });
-        l.push([true, 5, "c", { e: 5 }]);
+        l.push({
+            i: 5,
+            j: 6
+        });
+        l.push([true, 5, "c", {
+            e: 5
+        }]);
 
         expect(l[0]).toBe(undefined);
 
         let toArray = l.toArray();
 
-        expect(toArray[1]).toEqual({ i: 5, j: 6 });
+        expect(toArray[1]).toEqual({
+            i: 5,
+            j: 6
+        });
     });
 
     it("Getting all of the index of value exclude {} and []", () => {
         let l = new ZStorage();
         l.push(40);
-        l.push({ x: l.getValueAt(0) });
+        l.push({
+            x: l.getValueAt(0)
+        });
         l.push([5 + l.getValueAt(1).x]);
         l.push(40);
 
-        let id = l.getIndexOf(40);
-        expect(id).toEqual([0, 3]);
+        expect(l.find(40))
+            .toEqual([0, 3]);
+        expect(l.find(0))
+            .toBe(null)
     });
 
     it("Calculating the sum of all of the number values", () => {
@@ -196,11 +213,22 @@ describe("ZStorage functions", () => {
 
     it("Expressing in string the list", () => {
         let l = new ZStorage();
-        l.push([{ e: 5 }, { x: [5, { x: 3 }] }]);
+        l.push([{
+            e: 5
+        }, {
+            x: [5, {
+                x: 3
+            }]
+        }]);
         l.push(1);
         l.push("salut");
         l.push(4);
-        l.push({ x: 5.5, y: 6, t: [5, 5], s: "s" });
+        l.push({
+            x: 5.5,
+            y: 6,
+            t: [5, 5],
+            s: "s"
+        });
         l.push(true);
 
         expect(l.toString()).toBe(
@@ -210,7 +238,13 @@ describe("ZStorage functions", () => {
 
     it("Getting node at index", () => {
         let l = new ZStorage();
-        l.push([{ e: 5 }, { x: [5, { x: 3 }] }]);
+        l.push([{
+            e: 5
+        }, {
+            x: [5, {
+                x: 3
+            }]
+        }]);
         l.push("abracadabra");
 
         l.getNodeAt(1);
@@ -220,23 +254,44 @@ describe("ZStorage functions", () => {
 
     it("Permuting nodes value between us", () => {
         let l = new ZStorage();
-        l.push([{ e: 5 }, { x: [5, { x: 3 }] }]);
+        l.push([{
+            e: 5
+        }, {
+            x: [5, {
+                x: 3
+            }]
+        }]);
         l.push("abracadabra");
 
         l.permute(0, 1);
 
         expect(l.getValueAt(0)).toBe("abracadabra");
 
-        expect(l.getValueAt(1)).toEqual([{ e: 5 }, { x: [5, { x: 3 }] }]);
+        expect(l.getValueAt(1)).toEqual([{
+            e: 5
+        }, {
+            x: [5, {
+                x: 3
+            }]
+        }]);
     });
 
     it("Removing all explicit value in list", () => {
         let l = new ZStorage();
         l.push(5);
-        l.push({ a: [4.4, { b: 5 }] });
+        l.push({
+            a: [4.4, {
+                b: 5
+            }]
+        });
         l.push(5);
         l.push(5);
-        l.push([{ c: { d: 4, g: [false, 5, true] } }]);
+        l.push([{
+            c: {
+                d: 4,
+                g: [false, 5, true]
+            }
+        }]);
         l.push("yo");
 
         expect(l.length()).toBe(6);
@@ -245,19 +300,47 @@ describe("ZStorage functions", () => {
 
         expect(l.length()).toBe(0);
 
-        expect(removed).toEqual([
-            { id: 0, val: 5 },
-            { id: 1, val: { a: [4.4, { b: 5 }] } },
-            { id: 2, val: 5 },
-            { id: 3, val: 5 },
-            { id: 4, val: [{ c: { d: 4, g: [false, 5, true] } }] },
-            { id: 5, val: "yo" },
+        expect(removed).toEqual([{
+            id: 0,
+            val: 5
+        },
+            {
+                id: 1,
+                val: {
+                    a: [4.4, {
+                        b: 5
+                    }]
+                }
+            },
+            {
+                id: 2,
+                val: 5
+            },
+            {
+                id: 3,
+                val: 5
+            },
+            {
+                id: 4,
+                val: [{
+                    c: {
+                        d: 4,
+                        g: [false, 5, true]
+                    }
+                }]
+            },
+            {
+                id: 5,
+                val: "yo"
+            },
         ]);
     });
 
     it("Putting id in each element (didnt affect the list)", () => {
         let l = new ZStorage();
-        l.push({ e: 3 });
+        l.push({
+            e: 3
+        });
         l.push(3);
         l.push("quoicoubeh");
         const wId = l.withIDs();
@@ -277,8 +360,7 @@ describe("ZStorage functions", () => {
         l.action(
             (e) => {
                 return e + 1;
-            },
-            (e) => {
+            }, (e) => {
                 return e % 2 === 0;
             }
         );
@@ -286,8 +368,7 @@ describe("ZStorage functions", () => {
         l.action(
             (e) => {
                 return e * 2;
-            },
-            (e) => {
+            }, (e) => {
                 return e === 3 || e === 5;
             }
         );
@@ -301,19 +382,39 @@ describe("ZStorage functions", () => {
         let l = new ZStorage();
         l.push(-5);
         l.push(5 * 5 + l.sum());
-        l.push({ e: 5, f: l.average() });
+        l.push({
+            e: 5,
+            f: l.average()
+        });
+
         l.push(":(" + l.product());
         l.push(typeof (3 + ""));
         let removed = l.removeTypes(["number", "object"]);
 
-        expect(l.length()).toBe(2);
+        expect(l.length())
+            .toBe(2);
 
-        expect(l.getValueAt(1)).toEqual("string");
+        expect(l.getValueAt(1))
+            .toEqual("string");
 
-        expect(removed).toEqual([
-            { id: 0, type: "number", val: -5 },
-            { id: 1, type: "number", val: 20 },
-            { id: 2, type: "object", val: { e: 5, f: 7.5 } },
+        expect(removed).toEqual([{
+            id: 0,
+            type: "number",
+            val: -5
+        },
+            {
+                id: 1,
+                type: "number",
+                val: 20
+            },
+            {
+                id: 2,
+                type: "object",
+                val: {
+                    e: 5,
+                    f: 7.5
+                }
+            },
         ]);
     });
 
@@ -322,9 +423,15 @@ describe("ZStorage functions", () => {
         l.push(1);
         l.push([5]);
         l.push(3);
-        l.push({ e: "e", t: true });
+        l.push({
+            e: "e",
+            t: true
+        });
 
-        expect(l.includes([6, 6, { e: "e", t: true }])).toBe(true);
+        expect(l.includes([6, 6, {
+            e: "e",
+            t: true
+        }])).toBe(true);
     });
 
     it("Filling a list from x to y", () => {
@@ -332,7 +439,13 @@ describe("ZStorage functions", () => {
         l.push(1);
         l.push(4);
 
-        l.fill({ n1: 1, n2: 3 }, { i: 0, j: 0 });
+        l.fill({
+            n1: 1,
+            n2: 3
+        }, {
+            i: 0,
+            j: 0
+        });
 
         expect(l.length()).toBe(4);
 
@@ -343,12 +456,23 @@ describe("ZStorage functions", () => {
         let l = new ZStorage();
         l.push(5);
         l.push([1, 2, 3]);
-        l.push({ id: 4, po: 6 });
+        l.push({
+            id: 4,
+            po: 6
+        });
         l.push("power");
 
-        expect(l.zRegex(/po/)).toEqual([
-            { id: 2, val: { id: 4, po: 6 } },
-            { id: 3, val: "power" },
+        expect(l.zRegex(/po/)).toEqual([{
+            id: 2,
+            val: {
+                id: 4,
+                po: 6
+            }
+        },
+            {
+                id: 3,
+                val: "power"
+            },
         ]);
     });
 });
