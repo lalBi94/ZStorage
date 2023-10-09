@@ -185,7 +185,8 @@ export default class ZStorage {
         let stock = [];
 
         for (let i = 0; i <= this.length() - 1; ++i) {
-            if (this.getValueAt(i) === val || JSON.stringify(this.getValueAt(i)) === JSON.stringify(val)) stock.push(i);
+            if (this.getValueAt(i) === val || JSON.stringify(this.getValueAt(i)) === JSON.stringify(val))
+                stock.push(i);
         }
 
         return stock.length > 0 ? stock : null;
@@ -561,6 +562,20 @@ export default class ZStorage {
         }
 
         return stock;
+    }
+
+    /**
+     * Mix elements
+     * @return {ZStorage}
+     * */
+    mix() {
+        for (let i = this.length() - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            const tmp = this.getValueAt(i);
+
+            this.modifyValueAt(i, this.getValueAt(j));
+            this.modifyValueAt(j, tmp);
+        }
     }
 
     /**

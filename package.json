@@ -1,12 +1,12 @@
 {
   "name": "ZStorage",
-  "version": "1.0",
+  "version": "2.0",
   "description": "Chain list package",
   "scripts": {
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "doc": "npx jsdoc ./src/ZStorage.js ./src/ZNodes.js"
   },
-  "keywords": [],
+  "keywords": ["chainlist,list,collection,z"],
   "author": "General Zod (lalBi94)",
   "license": "MIT",
   "type": "module",

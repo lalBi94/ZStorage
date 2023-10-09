@@ -475,4 +475,16 @@ describe("ZStorage functions", () => {
             },
         ]);
     });
+
+    it("Mixing the list elements (a votre ame et conscience)", () => {
+        let l = new ZStorage()
+        l.push(432)
+        l.push({e:()=>3+3,g:3})
+        l.push(true)
+
+        l.mix()
+
+        expect(l.length())
+            .toBe(3)
+    })
 });
