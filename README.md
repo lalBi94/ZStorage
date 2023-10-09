@@ -6,16 +6,39 @@ Go to the GitHub release page you provided: **https://github.com/lalBi94/ZStorag
 
 ## Examples
 ```js
-import ZStorage from 'src/ZStorage'
-let l = new ZStorage()
+// Main
+import CardGame from "class/CardGame/CardGame"
+let cg = new CardGame([
+    {n:1,motif:"spade"},
+    {n:5,motif:"heart"},
+    {n:9,motif:"diamond"},
+    {n:2,motif:"flower"}
+    ...
+])
 
-l.push("hey")
-l.push(e:{j:()=>2+4, [2,[2,2]]})
-console.log(l.toString()) /* <"hey","e":{"j":()=>2+4,[2,[2,2]]}> */
+console.log(cg.getDeck().toString()) /* <{"n":1,"motif":"spade"},{"n":5,"motif":"heart"},{"n":9,"motif":"diamond"},{"n":2,"motif":"flower"},...>
+cg.mixDeck() */
+console.log(cg.getDeck().toString()) /* Its random so one possibility is: <{"n":2,"motif":"flower"},{"n":5,"motif":"heart"},{"n":1,"motif":"spade"},{"n":9,"motif":"diamond"},...> */
+```
 
-l.fill({n1:0,n2:2}, true)
-console.log(l.toString()) /* <true, true, true> */
-...
+```js
+// Card Game Class
+import ZStorage from 'libs/ZStorage/ZStorage'
+
+export default class CardGame {
+    constructor(deck) {
+        this.deck = new ZStorage()
+        for(let i = 0; i <= deck.length-1; ++i) this.deck.push(deck[i])
+    }
+
+    mixDeck() {
+        this.deck.mix()
+    }
+
+    getDeck() {
+        return this.deck
+    }
+}
 ```
 
 ## Documentation
