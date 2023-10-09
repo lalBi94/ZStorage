@@ -28,6 +28,7 @@ export default class CardGame {
 ```js
 // Main
 import CardGame from "class/CardGame/CardGame"
+
 let cg = new CardGame([
     {n:1,motif:"spade"},
     {n:5,motif:"heart"},
