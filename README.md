@@ -6,22 +6,6 @@ Go to the GitHub release page you provided: **https://github.com/lalBi94/ZStorag
 
 ## Examples
 ```js
-// Main
-import CardGame from "class/CardGame/CardGame"
-let cg = new CardGame([
-    {n:1,motif:"spade"},
-    {n:5,motif:"heart"},
-    {n:9,motif:"diamond"},
-    {n:2,motif:"flower"}
-    ...
-])
-
-console.log(cg.getDeck().toString()) /* <{"n":1,"motif":"spade"},{"n":5,"motif":"heart"},{"n":9,"motif":"diamond"},{"n":2,"motif":"flower"},...>
-cg.mixDeck() */
-console.log(cg.getDeck().toString()) /* Its random so one possibility is: <{"n":2,"motif":"flower"},{"n":5,"motif":"heart"},{"n":1,"motif":"spade"},{"n":9,"motif":"diamond"},...> */
-```
-
-```js
 // Card Game Class
 import ZStorage from 'libs/ZStorage/ZStorage'
 
@@ -39,6 +23,22 @@ export default class CardGame {
         return this.deck
     }
 }
+```
+
+```js
+// Main
+import CardGame from "class/CardGame/CardGame"
+let cg = new CardGame([
+    {n:1,motif:"spade"},
+    {n:5,motif:"heart"},
+    {n:9,motif:"diamond"},
+    {n:2,motif:"flower"}
+    ...
+])
+
+console.log(cg.getDeck().toString()) /* <{"n":1,"motif":"spade"},{"n":5,"motif":"heart"},{"n":9,"motif":"diamond"},{"n":2,"motif":"flower"},...>
+cg.mixDeck() */
+console.log(cg.getDeck().toString()) /* Its random so one possibility is: <{"n":2,"motif":"flower"},{"n":5,"motif":"heart"},{"n":1,"motif":"spade"},{"n":9,"motif":"diamond"},...> */
 ```
 
 ## Documentation
