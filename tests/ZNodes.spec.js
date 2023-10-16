@@ -25,4 +25,29 @@ describe("ZNodes", () => {
         expect(n.getNext().getNext())
             .toBe(null)
     })
+
+    it("Adding child value in specific node", () => {
+        let n = new ZNodes({e:5})
+        n.initChild()
+        n.pushChild(6)
+        n.pushChild(8)
+
+        expect(n.getChild().toString())
+            .toBe("<6,8>")
+    }) 
+
+    it("Removing child object", () => {
+        let n = new ZNodes({e:[3, true]})
+        n.initChild()
+        n.pushChild({e: 234})
+        n.pushChild("salut")
+        
+        expect(n.getChild().length())
+            .toBe(2)
+
+        n.freeChild()
+        
+        expect(n.getChild().length())
+            .toBe(0)
+    })
 })

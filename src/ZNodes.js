@@ -1,3 +1,5 @@
+import ZStorage from "./ZStorage.js"
+
 /**
  * @name ZNodes is necessary to create a ZStorage.
  * @version 1.0
@@ -11,6 +13,7 @@ export default class ZNodes {
     constructor(val) {
         this.val = val;
         this.next = null;
+        this.child = null
     }
 
     /**
@@ -62,5 +65,38 @@ export default class ZNodes {
      */
     setValue(val) {
         this.val = val;
+    }
+
+    /**
+     * Get children values
+     * @return {ZStorage}
+     */
+    getChild() {
+        return this.child
+    }
+
+    /***
+     * Init child list
+     * @return {void}
+     */
+    initChild() {
+        this.child = new ZStorage()
+    }
+
+    /**
+     * Add children to this node
+     * @param {any} v Value to push on this.child
+     * @return {void} 
+     */
+    pushChild(v) {
+        this.child.push(v)
+    }
+
+    /**
+     * Reset children
+     * @return {void} 
+     */
+    freeChild() {
+        this.child = new ZStorage()
     }
 }
