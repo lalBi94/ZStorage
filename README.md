@@ -2,7 +2,7 @@
 ZStorage is a JavaScript library for implementing **Linked Lists**.
 
 ## Installation
-Go to the GitHub release page you provided: **https://github.com/lalBi94/ZStorage/releases/tag/v2.0**.
+Go to the GitHub release page you provided: **https://github.com/lalBi94/ZStorage/releases/tag/v3.0**. Now, you can import the src/ file to put him in your project.
 
 ## Examples
 ```js
