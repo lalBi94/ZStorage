@@ -1,7 +1,7 @@
 {
   "homepage": "https://lalBi94.github.io/ZStorage/",
   "name": "zstorage",
-  "version": "2.0",
+  "version": "3.0",
   "description": "Chain list package",
   "scripts": {
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
