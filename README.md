@@ -37,8 +37,8 @@ let cg = new CardGame([
     ...
 ])
 
-console.log(cg.getDeck().toString()) /* <{"n":1,"motif":"spade"},{"n":5,"motif":"heart"},{"n":9,"motif":"diamond"},{"n":2,"motif":"flower"},...>
-cg.mixDeck() */
+console.log(cg.getDeck().toString()) /* <{"n":1,"motif":"spade"},{"n":5,"motif":"heart"},{"n":9,"motif":"diamond"},{"n":2,"motif":"flower"},...>*/
+cg.mixDeck()
 console.log(cg.getDeck().toString()) /* Its random so one possibility is: <{"n":2,"motif":"flower"},{"n":5,"motif":"heart"},{"n":1,"motif":"spade"},{"n":9,"motif":"diamond"},...> */
 ```
 
